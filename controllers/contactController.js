@@ -23,7 +23,23 @@ exports.markAsRead = async (req, res) => {
 
 exports.deleteContacts = async (req, res) => {
     try {
-        await Contact.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Contact deleted' });
-    } catch (err) { res.status(500).json({ error: err.message }); }
+        const id = req.params.id;
+        
+        // 1. Check karein ki id aayi bhi hai ya nahi (ya 'undefined' toh nahi aayi)
+        if (!id || id === 'undefined') {
+            return res.status(400).json({ error: 'Valid ID nahi mili. Frontend code check karein.' });
+        }
+
+        // 2. Delete operation
+        const deletedContact = await Contact.findByIdAndDelete(id);
+
+        if (!deletedContact) {
+            return res.status(404).json({ error: 'Message database mein nahi mila.' });
+        }
+
+        res.json({ message: 'Contact deleted successfully' });
+    } catch (err) { 
+        console.error("Backend Delete Error:", err.message);
+        res.status(500).json({ error: err.message }); 
+    }
 };
