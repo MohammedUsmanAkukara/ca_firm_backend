@@ -5,6 +5,7 @@ const serviceController = require('../controllers/serviceController');
 const contactController = require('../controllers/contactController');
 const testimonialController = require('../controllers/testimonialController'); // Import Testimonial Controller
 
+
 // Middleware for all admin routes
 router.use(authenticateJWT);
 
@@ -16,6 +17,7 @@ router.delete('/services/:id', serviceController.deleteService);
 // --- CONTACTS ROUTES ---
 router.get('/contacts', contactController.getContacts);
 router.put('/contacts/:id/read', contactController.markAsRead);
+router.delete('/contacts/:id', contactController.deleteContacts);
 
 // --- TESTIMONIALS ROUTES --- (Ye naya part hai)
 router.get('/testimonials', testimonialController.getAdminTestimonials);

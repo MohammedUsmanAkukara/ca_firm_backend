@@ -20,3 +20,19 @@ exports.markAsRead = async (req, res) => {
         res.json({ message: 'Marked as read' });
     } catch (err) { res.status(500).json({ error: err.message }); }
 };
+
+exports.deleteContacts = async (req, res) => {
+    try {
+        const contactId = req.params.id;
+
+        const deletedContact = await Contact.findByIdAndDelete(contactId);
+        if (!deletedContact) {
+            return res.status(404).json({ message: 'Message not found' });
+        }
+
+        res.status(200).json({ message: 'Message deleted successfully' });
+    } catch (err) {
+        console.error("Error deleting contact:", err);
+        res.status(500).json({ message: "Server error while deleting message" });
+    }
+};
