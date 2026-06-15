@@ -23,16 +23,7 @@ exports.markAsRead = async (req, res) => {
 
 exports.deleteContacts = async (req, res) => {
     try {
-        const contactId = req.params.id;
-
-        const deletedContact = await Contact.findByIdAndDelete(contactId);
-        if (!deletedContact) {
-            return res.status(404).json({ message: 'Message not found' });
-        }
-
-        res.status(200).json({ message: 'Message deleted successfully' });
-    } catch (err) {
-        console.error("Error deleting contact:", err);
-        res.status(500).json({ message: "Server error while deleting message" });
-    }
+        await Contact.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Contact deleted' });
+    } catch (err) { res.status(500).json({ error: err.message }); }
 };
